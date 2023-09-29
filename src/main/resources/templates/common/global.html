@@ -1,0 +1,55 @@
+<googlefont>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</googlefont>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">
+            <img src="/images/newspaper-256.png" alt="Logo" height="35" class="d-inline-block align-self-center">
+            Newspaper (but not on paper)
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item border">
+                    <a class="nav-link" th:href="@{/}">All News</a>
+                </li>
+                </li>
+                <li class="nav-item dropdown border">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        News by Category
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li th:each="category : ${categories}">
+                            <a class="dropdown-item"  th:href="@{/news/by-category/{category}(category=${category.id})}" th:text="${category.categoryName}"></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item border" sec:authorize="isFullyAuthenticated()" >
+                    <form th:action="@{/logout}" method="post">
+                        <button class="nav-link" style="background: none; border: none" type="submit">Logout</button>
+                    </form>
+                </li>
+                <li class="nav-item border" sec:authorize="isAuthenticated() == false" >
+                    <a class="nav-link" th:href="@{/login}">Login</a>
+                </li>
+                <li class="nav-item border" sec:authorize="hasAuthority('Journalist')">
+                    <a class="nav-link" th:href="@{/back-office}">Journalist Area </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<footer class="footer mt-auto py-3 bg-opacity-100 text-light">
+    <div class="container text-center">
+        <span class="text-dark">
+            &copy; Copyright <a href="https://github.com/ahidayati" target="_blank" class="text-black fw-bold">ahidayati</a>. All rights reserved.
+        </span>
+    </div>
+</footer>

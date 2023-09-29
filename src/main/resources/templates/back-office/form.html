@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+    <link rel="icon" th:href="@{/images/newspaper-24.png}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <div th:replace="common/global :: googlefont"></div>
+</head>
+<body>
+    <div th:replace="common/global :: nav"></div>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <h1 th:if="${news.id == 0}">Add news</h1>
+                <h1 th:if="${news.id != 0}">Modify news</h1>
+
+                <a th:href="@{/back-office}" class="text-dark">Go back</a><br><br>
+
+                <form th:object="${news}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
+                        <span class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="publicationDate" class="form-label">Date</label>
+                        <!--th:attr="value=${#temporals.createNow()}"-->
+                        <input type="text" class="form-control" id="publicationDate" name="publicationDate" th:field="*{publicationDate}"
+                               readonly th:placeholder="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+                        <span class="text-danger" th:if="${#fields.hasErrors('publicationDate')}" th:errors="*{publicationDate}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" aria-label="Default select example" th:field="*{category}" name="category">
+                            <option value="">Select category</option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+                        </select>
+                        <span class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <!--<input type="text" class="form-control" id="image" name="image" th:field="*{image}">-->
+                        <input type="file" class="form-control" id="image" name="uploadImage">
+                        <span class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+                        <span class="text-danger" th:if="${uploadError}" th:text="${uploadError}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea rows="2" class="form-control" id="content" name="content" th:field="*{content}"></textarea>
+                        <span class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div th:replace="common/global :: footer"></div>
+
+    <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+@import "bootstrap-5.2.3-dist/css/bootstrap.css";
+
+body {
+  font-family: 'Courier Prime', monospace;
+}
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+

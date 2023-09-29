@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${news.title}"></title>
+    <link rel="icon" th:href="@{/images/newspaper-24.png}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <div th:replace="common/global :: googlefont"></div>
+</head>
+<body>
+    <div th:replace="common/global :: nav"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6 text-center">
+                <img th:if="${news.image != null}" th:src="${news.image}" alt="${news.getTitle()}-img" style="max-height: 350px">
+                <img th:if="${news.image == null}" th:src="@{/images/no-image.jpg}" alt="${news.getTitle()}-img" style="max-height: 350px">
+            </div>
+            <div class="col-6">
+                <h1 th:text="${news.title}"></h1>
+                <p th:text="${#dates.format(news.publicationDate, 'dd-MMM-yyyy')}"></p>
+                <p th:text="${news.getContent()}"></p>
+                <p>Category:
+                    <a class="badge rounded-pill text-bg-secondary text-decoration-none" th:if="${news.category != null}" th:text="${news.category.categoryName}" th:href="@{/news/by-category/{category}(category=${news.category.id})}"></a>
+                    <span th:if="${news.category == null}">-</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="common/global :: footer"></div>
+    <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

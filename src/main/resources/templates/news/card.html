@@ -1,0 +1,36 @@
+
+<div class="container">
+    <div class="mb-3">
+        <h1 th:if="${category == null}">All News</h1>
+        <h1 th:if="${category != null}" th:text="${category.categoryName}"></h1>
+    </div>
+
+
+    <th:block th:if="${!newsList.isEmpty()}">
+        <div class="d-flex flex-wrap justify-content-evenly">
+
+
+            <div class="card mx-3 my-3" style="width: 20rem;" th:each="news, indexLoop : ${newsList}">
+                <img th:if="${news.image != null}" th:src="${news.image}" class="card-img-top" th:alt="${news.title}+'-img'" style="max-height:100px; object-fit: cover">
+                <img th:if="${news.image == null}" th:src="@{/images/no-image.jpg}" class="card-img-top" th:alt="${news.title}+'-img'" style="max-height:100px; object-fit: contain">
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${news.getTitle()}"></h5>
+                    <p th:text="${#dates.format(news.publicationDate, 'dd-MMM-yyyy')}"></p>
+                    <p>
+                        <a class="badge rounded-pill text-bg-secondary text-decoration-none" th:if="${news.category != null}" th:text="${news.category.categoryName}" th:href="@{/news/by-category/{category}(category=${news.category.id})}"></a>
+                        <span th:if="${news.category == null}">-</span>
+                    </p>
+                    <a th:href="@{/news/detail/{news}(news=${news.id})}" class="btn btn-outline-dark">See Details</a>
+                </div>
+            </div>
+
+
+        </div>
+    </th:block>
+
+    <div th:if="${newsList.isEmpty()}">
+        <p class="text-danger">No news available.</p>
+    </div>
+
+</div>

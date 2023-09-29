@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News List</title>
+    <link rel="icon" th:href="@{/images/newspaper-24.png}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <div th:replace="common/global :: googlefont"></div>
+</head>
+<body>
+    <div th:replace="common/global :: nav"></div>
+    <div class="container">
+        <p th:text="'Hello '+${#authentication.getPrincipal().username}"></p>
+        <h1>News List</h1>
+        <div th:if="${newsList.isEmpty()}">
+            <p class="text-danger">No news available</p>
+        </div>
+
+        <a th:href="@{/back-office/add}" class="btn btn-outline-dark">Add news</a>
+
+        <table class="table" th:if="${!newsList.isEmpty()}">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="news, indexLoop : ${newsList}">
+                <th scope="row" th:text="${indexLoop.index+1}"></th>
+                <td th:text="${news.title}"></td>
+                <td th:text="${#dates.format(news.publicationDate, 'dd-MMM-yyyy')}"></td>
+                <td>
+                    <a class="badge rounded-pill text-bg-secondary text-decoration-none" th:if="${news.category != null}" th:text="${news.category.categoryName}" th:href="@{/news/by-category/{category}(category=${news.category.id})}"></a>
+                    <span th:if="${news.category == null}">-</span>
+                </td>
+                <td>
+                    <img th:if="${news.image != null}" th:src="${news.image}" th:alt="${news.title}+'-img'" width="80">
+                    <img th:if="${news.image == null}" th:src="@{/images/no-image.jpg}" th:alt="${news.title}+'-img'" width="100">
+                </td>
+                <td>
+                    <a th:href="@{/news/detail/{news}(news=${news.id})}" class="btn btn-outline-secondary">See Details</a>
+                    <a  th:href="@{/back-office/delete/{news}(news=${news.id})}"class="btn btn-outline-danger">Delete</a>
+                    <a  th:href="@{/back-office/edit/{news}(news=${news.id})}" class="btn btn-outline-primary">Modify</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div th:replace="common/global :: footer"></div>
+    <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
